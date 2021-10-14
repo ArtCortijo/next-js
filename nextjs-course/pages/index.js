@@ -22,7 +22,8 @@ function HomePage(props) {
 // Again code that will never be visible on the client site that fetches data, and exposes data through props to this homepage component.
 // the getStaticProps must always return an object with a props key
 export async function getStaticProps() {
-  // this path will lead to the dummy backend json file.
+    console.log('Re-Generating...');
+    // this path will lead to the dummy backend json file.
   // tell path join in which path we're starting. Get to the current directory by using node js object or concept -> the process object which is globally available in node js.
   // The process.cwd() method returns the current working directory (cwd) of the Node.js process.
   // IMPORTANT: this cwd will not be the pages folder. Instead when the file is executed, next js will be executing it and it will be treat all the files as if they were at the root project folder.
@@ -35,10 +36,12 @@ export async function getStaticProps() {
   // To get the actual data. The parse(jsonData) converts it into regular js object.
   const data =JSON.parse(jsonData);
 
+  // revalidate -> next JS goes ahead and pre-renders pages. But it will now also do this Incremental Static Regeneration (ISR). In this example, the starting page (index) should be regenerated every 60 seconds no matter how many loads or reloads within those 60 seconds.
   return { 
     props: {
       products: data.products
-    }
+    },
+    revalidate: 60
   };
 }
 
