@@ -35,6 +35,18 @@ export async function getStaticProps() {
   const jsonData = await fs.readFile(filePath);
   // To get the actual data. The parse(jsonData) converts it into regular js object.
   const data =JSON.parse(jsonData);
+  
+  if (!data) {
+    return { 
+      redirect: {
+        destination: '/no-data'
+      } 
+    };
+  }
+
+  if (data.products.length === 0) {
+    return { notFound: true };
+  }
 
   // revalidate -> next JS goes ahead and pre-renders pages. But it will now also do this Incremental Static Regeneration (ISR). In this example, the starting page (index) should be regenerated every 60 seconds no matter how many loads or reloads within those 60 seconds.
   return { 
