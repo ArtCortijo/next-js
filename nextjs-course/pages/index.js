@@ -2,6 +2,8 @@ import path from 'path';
 // The fs (filesystem) imports the file system module from node JS. This is not a third party package
 import fs from 'fs/promises';
 
+import Link from 'next/link';
+
 function HomePage(props) {
   const { products } = props;
   console.log(products);
@@ -9,7 +11,9 @@ function HomePage(props) {
   return (
     <ul>
       {products.map((product) => (
-        <li key={product.id}>{product.title}</li>
+        <li key={product.id}>
+          <Link href={`/${product.id}`}>{product.title}</Link>
+        </li>
       ))}
     </ul>
   );
