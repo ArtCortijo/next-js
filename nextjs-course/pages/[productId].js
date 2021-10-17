@@ -19,14 +19,21 @@ function ProductDetailPage (props) {
   )
 }
 
+// Since we normally get the data from a database
+async function getData() {
+  const filePath = path.join(process.cwd(), 'data', 'dummy-backend.json');
+  const jsonData = await fs.readFile(filePath);
+  const data =JSON.parse(jsonData);
+
+  return data;
+}
+
 // we can use this context parameter, which is exposed to us buying Next.js, to get hold of the concrete param values. So the concrete values for these dynamic segments in our paths.
 export async function getStaticProps(context) {
   const { params } = context;
   const productId = params.productId;
 
-  const filePath = path.join(process.cwd(), 'data', 'dummy-backend.json');
-  const jsonData = await fs.readFile(filePath);
-  const data =JSON.parse(jsonData);
+  const data = await getData();
 
   const product = data.products.find(product => product.id === productId);
 
@@ -39,10 +46,13 @@ export async function getStaticProps(context) {
 
 // We need getStaticPaths because this a dynamic page. The goal of this function is to tell Next.js which instances of this dynamic page should be generated.
 export async function getStaticPaths() {
+  const data = await getData();
+
+  const ids = data.products.map((product) => product.id);
+  const pathsWithParams = ids.map((id) => ({params: {productId: id}}));
+
   return {
-    paths: [
-      { params: { productId: 'p1' } },
-    ], 
+    paths: pathsWithParams, 
     // fallback: true,
     // You can use blocking as a value and you need to return a fallback like in the condition if (!loadedProduct). It will take slightly more time to load the page content
     fallback: 'blocking'
