@@ -6,6 +6,11 @@ import { Fragment } from 'react';
 function ProductDetailPage (props) {
   const { loadedProduct } = props;
 
+  // If fallback: true, you return a fallback while the server fetches the data
+  if (!loadedProduct) {
+    return <p>Loading...</p>
+  }
+
   return (
     <Fragment>
       <h1>{loadedProduct.title}</h1>
@@ -37,11 +42,10 @@ export async function getStaticPaths() {
   return {
     paths: [
       { params: { productId: 'p1' } },
-      { params: { productId: 'p2' } },
-      { params: { productId: 'p3' } },
-      { params: { productId: 'p4' } },
     ], 
-    fallback: false
+    // fallback: true,
+    // You can use blocking as a value and you need to return a fallback like in the condition if (!loadedProduct). It will take slightly more time to load the page content
+    fallback: 'blocking'
   }
 }
 
