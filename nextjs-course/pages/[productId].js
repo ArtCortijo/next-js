@@ -32,10 +32,13 @@ async function getData() {
 export async function getStaticProps(context) {
   const { params } = context;
   const productId = params.productId;
-
   const data = await getData();
-
   const product = data.products.find(product => product.id === productId);
+
+  // with the notFound & fallback (in getStaticPaths) set to true, it will return the 404 page
+  if (!product) {
+    return {notFound: true};
+  }
 
   return {
     props: {
@@ -47,7 +50,6 @@ export async function getStaticProps(context) {
 // We need getStaticPaths because this a dynamic page. The goal of this function is to tell Next.js which instances of this dynamic page should be generated.
 export async function getStaticPaths() {
   const data = await getData();
-
   const ids = data.products.map((product) => product.id);
   const pathsWithParams = ids.map((id) => ({params: {productId: id}}));
 
@@ -55,7 +57,7 @@ export async function getStaticPaths() {
     paths: pathsWithParams, 
     // fallback: true,
     // You can use blocking as a value and you need to return a fallback like in the condition if (!loadedProduct). It will take slightly more time to load the page content
-    fallback: 'blocking'
+    fallback: true
   }
 }
 
