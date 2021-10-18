@@ -9,10 +9,7 @@ export default userIdPage;
 export async function getServerSideProps(context) {
   // req and res are default node objects
   const { params, req, res } = context;
-  console.log(req);
-  console.log(res);
-
-  const userId = params.userId;
+  // const userId = params.userId;
 
   return {
     props: {

@@ -18,3 +18,8 @@ h5,
 h6 {
   font-family: 'Lato', sans-serif;
 }
+
+a {
+  color: rgb(245, 245, 245);
+  text-decoration: none;
+}
