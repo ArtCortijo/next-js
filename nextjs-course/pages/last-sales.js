@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 function LastSalesPage(props) {
-  const [sales, setSales] = useState();
+  // props.sales -> pre-rendered sales from the server (or the build process) are the initial state
+  const [sales, setSales] = useState(props.sales);
   // const [isLoading, setIsLoading] = useState(false);
   
   // useEffect(() => {
@@ -62,12 +63,55 @@ function LastSalesPage(props) {
   return (
     <ul>
       {sales.map(sale => (
-        <li key={sale.id}>
+        <li className="sale-item" key={sale.id}>
           {sale.username} - ${sale.volume}
         </li>
       ))}
     </ul>
   )
+}
+
+export async function getStaticProps() {
+  // return fetch('https://nextjs-course-53e50-default-rtdb.firebaseio.com/sales.json')
+  // .then(response => response.json())
+  // .then(data => {
+  //   const transformedSales = [];
+
+  //   for (const key in data) {
+  //     transformedSales.push({
+  //       id: key, 
+  //       username: data[key].username, 
+  //       volume: data[key].volume
+  //     });
+  //   }
+
+  //   return {
+  //     props: {
+  //       sales: transformedSales
+  //     }, 
+  //     revalidate: 60
+  //   }
+  // });
+
+  // We could also use the await keyword
+  const response = await fetch('https://nextjs-course-53e50-default-rtdb.firebaseio.com/sales.json');
+  const data = await response.json();
+  const transformedSales = [];
+
+  for (const key in data) {
+    transformedSales.push({
+      id: key, 
+      username: data[key].username, 
+      volume: data[key].volume
+    });
+  }
+
+  return {
+    props: {
+      sales: transformedSales
+    }, 
+    revalidate: 60
+  }
 }
 
 export default LastSalesPage;
