@@ -17,7 +17,9 @@ export async function getStaticProps() {
   return {
     props: {
       events: featuredEvents
-    }
+    },
+    //30 minutes
+    revalidate: 1800
   }
 }
 
