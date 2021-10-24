@@ -1,5 +1,4 @@
 import Head from 'next/head';
-
 import { Fragment } from 'react';
 import { getFeaturedEvents, getEventById } from '../../helpers/api-util';
 
