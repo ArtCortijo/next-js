@@ -1,3 +1,5 @@
+import Head from 'next/head';
+
 import { getFeaturedEvents } from '../helpers/api-util';
 import EventList from '../components/events/event-list';
 
@@ -5,6 +7,14 @@ function HomePage(props) {
 
   return (
     <div>
+      {/* Next.js Head component - You can add any HTML elements that would normally go into the head section of your page. */}
+      <Head>
+        <title>Arturo's NextJS Events</title>
+        <meta 
+          name="description" 
+          content="Lorem ipsum dolor sit amet consectetur adipisicing elit."   
+        />
+      </Head>
       <EventList items={props.events} />
     </div>
   );
